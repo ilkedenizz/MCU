@@ -79,7 +79,7 @@
             <h1 class="text-base sm:text-lg font-bold tracking-tight text-white leading-tight">
               Tam İzleme Listesi &amp; Maraton Takibi
             </h1>
-            <p class="text-xs text-zinc-400">
+            <p id="headerSubtitle" class="text-xs text-zinc-400">
               Çıkış Sırasına Göre • Infinity &amp; Multiverse Saga (77 Yapım)
             </p>
           </div>
@@ -125,22 +125,53 @@
         </div>
       </div>
 
-      <!-- Genel İlerleme Çubuğu -->
-      <div class="mt-3.5">
-        <div class="flex items-center justify-between text-xs mb-1.5">
-          <span class="text-zinc-400 font-medium">Genel Maraton İlerlemesi</span>
-          <div class="flex items-center gap-2 font-mono">
-            <span id="overallCount" class="text-white font-semibold">0 / 77</span>
-            <span class="text-zinc-600">•</span>
-            <span id="overallPercent" class="text-marvelRed font-bold">%0</span>
-          </div>
+      <!-- Sıralama Modu Değiştirici (Çıkış Sırası vs Hikaye Sırası) & İlerleme -->
+      <div class="mt-3.5 pt-3 border-t border-borderLine/70 flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+        <!-- Segmented Toggle Switch -->
+        <div class="inline-flex p-1 bg-surface border border-borderLine rounded-xl self-start shrink-0" role="tablist" aria-label="Sıralama Modu">
+          <button
+            id="btnModeRelease"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer bg-marvelRed text-white shadow-sm"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Çıkış Sırası (Vizyon)
+          </button>
+          <button
+            id="btnModeChrono"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-zinc-400 hover:text-zinc-200"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Hikaye Sırası (Kronolojik)
+          </button>
         </div>
-        <div class="w-full h-2 bg-surface border border-borderLine rounded-full overflow-hidden">
-          <div
-            id="overallBar"
-            class="h-full bg-marvelRed transition-all duration-300 ease-out rounded-full"
-            style="width: 0%"
-          ></div>
+
+        <!-- Genel İlerleme Çubuğu -->
+        <div class="flex-1 max-w-xl">
+          <div class="flex items-center justify-between text-xs mb-1.5">
+            <span class="text-zinc-400 font-medium">Genel Maraton İlerlemesi</span>
+            <div class="flex items-center gap-2 font-mono">
+              <span id="overallCount" class="text-white font-semibold">0 / 77</span>
+              <span class="text-zinc-600">•</span>
+              <span id="overallPercent" class="text-marvelRed font-bold">%0</span>
+            </div>
+          </div>
+          <div class="w-full h-2 bg-surface border border-borderLine rounded-full overflow-hidden">
+            <div
+              id="overallBar"
+              class="h-full bg-marvelRed transition-all duration-300 ease-out rounded-full"
+              style="width: 0%"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -215,7 +246,7 @@
           <input
             id="searchInput"
             type="text"
-            placeholder="Film, dizi, yıl veya sıra no ara (örn: Iron Man, 2021, #34)..."
+            placeholder="Film, dizi, yıl, dönem veya sıra no ara (örn: Iron Man, 1943, #01)..."
             class="w-full bg-surface border border-borderLine focus:border-zinc-500 focus:outline-none rounded-xl pl-10 pr-9 py-2.5 text-sm text-white placeholder-zinc-500 transition-colors"
           />
           <button
@@ -231,21 +262,13 @@
         </div>
 
         <!-- Faz Seçici Dropdown -->
-        <div class="sm:w-56">
+        <div class="sm:w-64">
           <select
             id="phaseSelect"
-            aria-label="Faz Seçimi"
+            aria-label="Dönem veya Faz Seçimi"
             class="w-full bg-surface border border-borderLine focus:border-zinc-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-zinc-200 cursor-pointer"
           >
-            <option value="all">Tüm Fazlar (Faz 1 – Faz 6)</option>
-            <option value="infinity">Infinity Saga (Faz 1 – 3)</option>
-            <option value="multiverse">Multiverse Saga (Faz 4 – 6)</option>
-            <option value="Faz 1">Faz 1 (2008 – 2012)</option>
-            <option value="Faz 2">Faz 2 (2013 – 2015)</option>
-            <option value="Faz 3">Faz 3 (2016 – 2019)</option>
-            <option value="Faz 4">Faz 4 (2021 – 2022)</option>
-            <option value="Faz 5">Faz 5 (2023 – 2025)</option>
-            <option value="Faz 6">Faz 6 (2025 – 2026)</option>
+            <!-- JS ile aktif moda (Faz veya Kronolojik Dönem) göre dinamik doldurulur -->
           </select>
         </div>
       </div>
@@ -348,97 +371,103 @@
   </div>
 
   <script>
-    // 77 Yapımlık Tam MCU Veri Seti (Çıkış Sırasına Göre)
+    // 77 Yapımlık Tam MCU Veri Seti (Çıkış Sırası ve Kronolojik Hikaye Sırası Dahil)
     const MCU_ITEMS = [
       // INFINITY SAGA - FAZ 1
-      { id: 1, title: "Iron Man", type: "Film", category: "film", year: "2008", phase: "Faz 1", saga: "Infinity Saga" },
-      { id: 2, title: "The Incredible Hulk", type: "Film", category: "film", year: "2008", phase: "Faz 1", saga: "Infinity Saga" },
-      { id: 3, title: "Iron Man 2", type: "Film", category: "film", year: "2010", phase: "Faz 1", saga: "Infinity Saga" },
-      { id: 4, title: "Thor", type: "Film", category: "film", year: "2011", phase: "Faz 1", saga: "Infinity Saga" },
-      { id: 5, title: "Captain America: The First Avenger", type: "Film", category: "film", year: "2011", phase: "Faz 1", saga: "Infinity Saga" },
-      { id: 6, title: "The Avengers", type: "Film", category: "film", year: "2012", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 1, chronoOrder: 4, storyTime: "2010", chronoEra: "2010 – 2012: Yenilmezler Kuruluyor", title: "Iron Man", type: "Film", category: "film", year: "2008", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 2, chronoOrder: 6, storyTime: "2011", chronoEra: "2010 – 2012: Yenilmezler Kuruluyor", title: "The Incredible Hulk", type: "Film", category: "film", year: "2008", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 3, chronoOrder: 5, storyTime: "2011", chronoEra: "2010 – 2012: Yenilmezler Kuruluyor", title: "Iron Man 2", type: "Film", category: "film", year: "2010", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 4, chronoOrder: 7, storyTime: "2011", chronoEra: "2010 – 2012: Yenilmezler Kuruluyor", title: "Thor", type: "Film", category: "film", year: "2011", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 5, chronoOrder: 1, storyTime: "1943–1945", chronoEra: "1940'lar – 1990'lar: Başlangıç", title: "Captain America: The First Avenger", type: "Film", category: "film", year: "2011", phase: "Faz 1", saga: "Infinity Saga" },
+      { id: 6, chronoOrder: 8, storyTime: "2012", chronoEra: "2010 – 2012: Yenilmezler Kuruluyor", title: "The Avengers", type: "Film", category: "film", year: "2012", phase: "Faz 1", saga: "Infinity Saga" },
 
       // INFINITY SAGA - FAZ 2
-      { id: 7, title: "Iron Man 3", type: "Film", category: "film", year: "2013", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 8, title: "Thor: The Dark World", type: "Film", category: "film", year: "2013", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 9, title: "Captain America: The Winter Soldier", type: "Film", category: "film", year: "2014", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 10, title: "Guardians of the Galaxy", type: "Film", category: "film", year: "2014", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 11, title: "Daredevil – Sezon 1", type: "Netflix Dizi", category: "series", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 12, title: "Avengers: Age of Ultron", type: "Film", category: "film", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
-      { id: 13, title: "Ant-Man", type: "Film", category: "film", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 7, chronoOrder: 9, storyTime: "Aralık 2012", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Iron Man 3", type: "Film", category: "film", year: "2013", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 8, chronoOrder: 10, storyTime: "2013", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Thor: The Dark World", type: "Film", category: "film", year: "2013", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 9, chronoOrder: 11, storyTime: "2014", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Captain America: The Winter Soldier", type: "Film", category: "film", year: "2014", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 10, chronoOrder: 12, storyTime: "2014", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Guardians of the Galaxy", type: "Film", category: "film", year: "2014", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 11, chronoOrder: 15, storyTime: "2015 Başları", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Daredevil – Sezon 1", type: "Netflix Dizi", category: "series", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 12, chronoOrder: 17, storyTime: "2015", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Avengers: Age of Ultron", type: "Film", category: "film", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
+      { id: 13, chronoOrder: 18, storyTime: "2015", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Ant-Man", type: "Film", category: "film", year: "2015", phase: "Faz 2", saga: "Infinity Saga" },
 
       // INFINITY SAGA - FAZ 3
-      { id: 14, title: "Jessica Jones – Sezon 1", type: "Netflix Dizi", category: "series", year: "2015", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 15, title: "Daredevil – Sezon 2", type: "Netflix Dizi", category: "series", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 16, title: "Captain America: Civil War", type: "Film", category: "film", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 17, title: "Luke Cage – Sezon 1", type: "Netflix Dizi", category: "series", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 18, title: "Doctor Strange", type: "Film", category: "film", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 19, title: "Iron Fist – Sezon 1", type: "Netflix Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 20, title: "Guardians of the Galaxy Vol. 2", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 21, title: "Spider-Man: Homecoming", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 22, title: "The Defenders", type: "Netflix Mini Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 23, title: "Thor: Ragnarok", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 24, title: "The Punisher – Sezon 1", type: "Netflix Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 25, title: "Black Panther", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 26, title: "Jessica Jones – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 27, title: "Avengers: Infinity War", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 28, title: "Luke Cage – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 29, title: "Ant-Man and the Wasp", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 30, title: "Iron Fist – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 31, title: "Daredevil – Sezon 3", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 32, title: "The Punisher – Sezon 2", type: "Netflix Dizi", category: "series", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 33, title: "Captain Marvel", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 34, title: "Avengers: Endgame", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 35, title: "Jessica Jones – Sezon 3", type: "Netflix Dizi", category: "series", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
-      { id: 36, title: "Spider-Man: Far From Home", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 14, chronoOrder: 16, storyTime: "2015", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Jessica Jones – Sezon 1", type: "Netflix Dizi", category: "series", year: "2015", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 15, chronoOrder: 19, storyTime: "2015 Sonları", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Daredevil – Sezon 2", type: "Netflix Dizi", category: "series", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 16, chronoOrder: 22, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Captain America: Civil War", type: "Film", category: "film", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 17, chronoOrder: 20, storyTime: "2015 Sonları", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Luke Cage – Sezon 1", type: "Netflix Dizi", category: "series", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 18, chronoOrder: 27, storyTime: "2016–2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Doctor Strange", type: "Film", category: "film", year: "2016", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 19, chronoOrder: 21, storyTime: "2016 Başları", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Iron Fist – Sezon 1", type: "Netflix Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 20, chronoOrder: 13, storyTime: "2014", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "Guardians of the Galaxy Vol. 2", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 21, chronoOrder: 25, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Spider-Man: Homecoming", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 22, chronoOrder: 24, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "The Defenders", type: "Netflix Mini Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 23, chronoOrder: 33, storyTime: "2017 Sonları", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Thor: Ragnarok", type: "Film", category: "film", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 24, chronoOrder: 26, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "The Punisher – Sezon 1", type: "Netflix Dizi", category: "series", year: "2017", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 25, chronoOrder: 23, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Black Panther", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 26, chronoOrder: 28, storyTime: "2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Jessica Jones – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 27, chronoOrder: 35, storyTime: "2018", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Avengers: Infinity War", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 28, chronoOrder: 29, storyTime: "2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Luke Cage – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 29, chronoOrder: 34, storyTime: "2018", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Ant-Man and the Wasp", type: "Film", category: "film", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 30, chronoOrder: 30, storyTime: "2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Iron Fist – Sezon 2", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 31, chronoOrder: 31, storyTime: "2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Daredevil – Sezon 3", type: "Netflix Dizi", category: "series", year: "2018", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 32, chronoOrder: 32, storyTime: "2017", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "The Punisher – Sezon 2", type: "Netflix Dizi", category: "series", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 33, chronoOrder: 3, storyTime: "1995", chronoEra: "1940'lar – 1990'lar: Başlangıç", title: "Captain Marvel", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 34, chronoOrder: 37, storyTime: "2023", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Avengers: Endgame", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 35, chronoOrder: 36, storyTime: "2018", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Jessica Jones – Sezon 3", type: "Netflix Dizi", category: "series", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
+      { id: 36, chronoOrder: 43, storyTime: "Yaz 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Spider-Man: Far From Home", type: "Film", category: "film", year: "2019", phase: "Faz 3", saga: "Infinity Saga" },
 
       // MULTIVERSE SAGA - FAZ 4
-      { id: 37, title: "WandaVision", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 38, title: "The Falcon and the Winter Soldier", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 39, title: "Loki – Sezon 1", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 40, title: "Black Widow", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 41, title: "What If...? – Sezon 1", type: "Animasyon", category: "anim", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 42, title: "Shang-Chi and the Legend of the Ten Rings", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 43, title: "Eternals", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 44, title: "Hawkeye", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 45, title: "Spider-Man: No Way Home", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 46, title: "Moon Knight", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 47, title: "Doctor Strange in the Multiverse of Madness", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 48, title: "Ms. Marvel", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 49, title: "Thor: Love and Thunder", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 50, title: "I Am Groot – Sezon 1", type: "Kısa Animasyon", category: "anim", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 51, title: "She-Hulk: Attorney at Law", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 52, title: "Werewolf by Night", type: "Özel Bölüm", category: "special", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 53, title: "Black Panther: Wakanda Forever", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
-      { id: 54, title: "The Guardians of the Galaxy Holiday Special", type: "Özel Bölüm", category: "special", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 37, chronoOrder: 39, storyTime: "Kasım 2023", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "WandaVision", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 38, chronoOrder: 42, storyTime: "Bahar 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "The Falcon and the Winter Soldier", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 39, chronoOrder: 38, storyTime: "Zaman Dışı", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Loki – Sezon 1", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 40, chronoOrder: 23, storyTime: "2016", chronoEra: "2016 – 2018: İç Savaş ve Sonsuzluk", title: "Black Widow", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 41, chronoOrder: 40, storyTime: "Çoklu Evren", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "What If...? – Sezon 1", type: "Animasyon", category: "anim", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 42, chronoOrder: 41, storyTime: "Bahar 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Shang-Chi and the Legend of the Ten Rings", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 43, chronoOrder: 44, storyTime: "Sonbahar 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Eternals", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 44, chronoOrder: 48, storyTime: "Aralık 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Hawkeye", type: "Dizi", category: "series", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 45, chronoOrder: 45, storyTime: "Sonbahar 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Spider-Man: No Way Home", type: "Film", category: "film", year: "2021", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 46, chronoOrder: 49, storyTime: "Bahar 2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Moon Knight", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 47, chronoOrder: 46, storyTime: "Kasım 2024", chronoEra: "2023 – 2024: Blip Sonrası ve Çoklu Evren", title: "Doctor Strange in the Multiverse of Madness", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 48, chronoOrder: 52, storyTime: "Sonbahar 2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Ms. Marvel", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 49, chronoOrder: 51, storyTime: "2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Thor: Love and Thunder", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 50, chronoOrder: 14, storyTime: "2014", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "I Am Groot – Sezon 1", type: "Kısa Animasyon", category: "anim", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 51, chronoOrder: 50, storyTime: "2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "She-Hulk: Attorney at Law", type: "Dizi", category: "series", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 52, chronoOrder: 54, storyTime: "2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Werewolf by Night", type: "Özel Bölüm", category: "special", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 53, chronoOrder: 53, storyTime: "2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Black Panther: Wakanda Forever", type: "Film", category: "film", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
+      { id: 54, chronoOrder: 55, storyTime: "Aralık 2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "The Guardians of the Galaxy Holiday Special", type: "Özel Bölüm", category: "special", year: "2022", phase: "Faz 4", saga: "Multiverse Saga" },
 
       // MULTIVERSE SAGA - FAZ 5
-      { id: 55, title: "Ant-Man and the Wasp: Quantumania", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 56, title: "Guardians of the Galaxy Vol. 3", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 57, title: "Secret Invasion", type: "Dizi", category: "series", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 58, title: "I Am Groot – Sezon 2", type: "Kısa Animasyon", category: "anim", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 59, title: "Loki – Sezon 2", type: "Dizi", category: "series", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 60, title: "The Marvels", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 61, title: "What If...? – Sezon 2", type: "Animasyon", category: "anim", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 62, title: "Echo", type: "Dizi", category: "series", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 63, title: "Deadpool & Wolverine", type: "Film", category: "film", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 64, title: "Agatha All Along", type: "Dizi", category: "series", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 65, title: "What If...? – Sezon 3", type: "Animasyon", category: "anim", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 66, title: "Your Friendly Neighborhood Spider-Man – Sezon 1", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 67, title: "Captain America: Brave New World", type: "Film", category: "film", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 68, title: "Daredevil: Born Again – Sezon 1", type: "Dizi", category: "series", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 69, title: "Thunderbolts*", type: "Film", category: "film", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
-      { id: 70, title: "Ironheart", type: "Dizi", category: "series", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 55, chronoOrder: 57, storyTime: "2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Ant-Man and the Wasp: Quantumania", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 56, chronoOrder: 58, storyTime: "2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Guardians of the Galaxy Vol. 3", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 57, chronoOrder: 59, storyTime: "2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Secret Invasion", type: "Dizi", category: "series", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 58, chronoOrder: 15, storyTime: "2014", chronoEra: "2013 – 2015: Sokaklar ve Uzay", title: "I Am Groot – Sezon 2", type: "Kısa Animasyon", category: "anim", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 59, chronoOrder: 56, storyTime: "Zaman Dışı", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Loki – Sezon 2", type: "Dizi", category: "series", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 60, chronoOrder: 60, storyTime: "2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "The Marvels", type: "Film", category: "film", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 61, chronoOrder: 61, storyTime: "Çoklu Evren", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "What If...? – Sezon 2", type: "Animasyon", category: "anim", year: "2023", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 62, chronoOrder: 47, storyTime: "Mayıs 2025", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Echo", type: "Dizi", category: "series", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 63, chronoOrder: 63, storyTime: "2024 (Earth-10005)", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Deadpool & Wolverine", type: "Film", category: "film", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 64, chronoOrder: 64, storyTime: "Sonbahar 2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Agatha All Along", type: "Dizi", category: "series", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 65, chronoOrder: 65, storyTime: "Çoklu Evren", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "What If...? – Sezon 3", type: "Animasyon", category: "anim", year: "2024", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 66, chronoOrder: 66, storyTime: "Alternatif 2016", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Your Friendly Neighborhood Spider-Man – Sezon 1", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 67, chronoOrder: 68, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Captain America: Brave New World", type: "Film", category: "film", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 68, chronoOrder: 69, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Daredevil: Born Again – Sezon 1", type: "Dizi", category: "series", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 69, chronoOrder: 70, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Thunderbolts*", type: "Film", category: "film", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
+      { id: 70, chronoOrder: 67, storyTime: "2026", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Ironheart", type: "Dizi", category: "series", year: "2025", phase: "Faz 5", saga: "Multiverse Saga" },
 
       // MULTIVERSE SAGA - FAZ 6
-      { id: 71, title: "The Fantastic Four: First Steps", type: "Film", category: "film", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 72, title: "Eyes of Wakanda", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 73, title: "Marvel Zombies", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 74, title: "Wonder Man", type: "Dizi", category: "series", year: "Ocak 2026", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 75, title: "Daredevil: Born Again – Sezon 2", type: "Dizi", category: "series", year: "Mart 2026", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 76, title: "Spider-Man: Brand New Day", type: "Film", category: "film", year: "Temmuz 2026", phase: "Faz 6", saga: "Multiverse Saga" },
-      { id: 77, title: "VisionQuest", type: "Dizi", category: "series", year: "Sonbahar 2026", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 71, chronoOrder: 71, storyTime: "1960'lar (Earth-828)", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "The Fantastic Four: First Steps", type: "Film", category: "film", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 72, chronoOrder: 2, storyTime: "Antik Çağ – 1896", chronoEra: "1940'lar – 1990'lar: Başlangıç", title: "Eyes of Wakanda", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 73, chronoOrder: 62, storyTime: "Çoklu Evren", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Marvel Zombies", type: "Animasyon", category: "anim", year: "2025", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 74, chronoOrder: 72, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Wonder Man", type: "Dizi", category: "series", year: "Ocak 2026", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 75, chronoOrder: 74, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Daredevil: Born Again – Sezon 2", type: "Dizi", category: "series", year: "Mart 2026", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 76, chronoOrder: 75, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "Spider-Man: Brand New Day", type: "Film", category: "film", year: "Temmuz 2026", phase: "Faz 6", saga: "Multiverse Saga" },
+      { id: 77, chronoOrder: 76, storyTime: "2027", chronoEra: "2025 – 2026: Yeni Çağ ve Kıyamet", title: "VisionQuest", type: "Dizi", category: "series", year: "Sonbahar 2026", phase: "Faz 6", saga: "Multiverse Saga" },
     ];
+
+    // Hikaye Sırası (Kronolojik) için kesintisiz 1–77 sıralamasını normalize et
+    const CHRONO_SORTED_BASE = [...MCU_ITEMS].sort((a, b) => a.chronoOrder - b.chronoOrder || a.id - b.id);
+    CHRONO_SORTED_BASE.forEach((item, index) => {
+      item.chronoRank = index + 1;
+    });
 
     const PHASE_META = {
       "Faz 1": { years: "2008 – 2012", subtitle: "Başlangıç ve Avengers'ın Kuruluşu" },
@@ -449,16 +478,27 @@
       "Faz 6": { years: "2025 – 2026", subtitle: "Doomsday'e Giden Yol" },
     };
 
+    const CHRONO_ERAS = [
+      { key: "1940'lar – 1990'lar: Başlangıç", years: "Antik Çağ – 1995", subtitle: "Wakanda Tarihi, Süper Asker ve Kozmik Kökenler" },
+      { key: "2010 – 2012: Yenilmezler Kuruluyor", years: "2010 – 2012", subtitle: "Kahramanların Ortaya Çıkışı ve New York Savaşı" },
+      { key: "2013 – 2015: Sokaklar ve Uzay", years: "2012 Sonu – 2015", subtitle: "Hydra'nın Çöküşü, Galaksi Koruyucuları ve Sokak Kahramanları" },
+      { key: "2016 – 2018: İç Savaş ve Sonsuzluk", years: "2016 – 2018", subtitle: "Sokovia Anlaşmaları, Thanos'un Gelişi ve Blip" },
+      { key: "2023 – 2024: Blip Sonrası ve Çoklu Evren", years: "2023 – 2024", subtitle: "Endgame Sonrası Yeni Dünya ve Çoklu Evren Çatlağı" },
+      { key: "2025 – 2026: Yeni Çağ ve Kıyamet", years: "2025 – 2027+", subtitle: "Yeni Kahramanlar, Alternatif Evrenler ve Doomsday'e Giden Yol" },
+    ];
+
     const STORAGE_KEY = "mcu_watchlist_v1_77";
+    const MODE_STORAGE_KEY = "mcu_watchlist_sort_mode_v1";
 
     // Uygulama Durumu (State)
     let watchedSet = new Set();
+    let orderMode = "release"; // "release" | "chrono"
     let activeFilter = "all";
     let selectedPhase = "all";
     let searchQuery = "";
     let toastTimer = null;
 
-    // LocalStorage'dan veriyi güvenli yükle
+    // LocalStorage'dan veriyi ve mod tercihini güvenli yükle
     function loadProgress() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -467,6 +507,10 @@
           if (Array.isArray(parsed)) {
             watchedSet = new Set(parsed.filter(id => typeof id === "number" && id >= 1 && id <= 77));
           }
+        }
+        const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
+        if (savedMode === "release" || savedMode === "chrono") {
+          orderMode = savedMode;
         }
       } catch (err) {
         console.error("Kayıtlı ilerleme okunamadı:", err);
@@ -480,6 +524,70 @@
       } catch (err) {
         console.error("İlerleme kaydedilemedi:", err);
       }
+    }
+
+    // Sıralama modunu değiştir ve kaydet
+    function setOrderMode(newMode) {
+      if (orderMode === newMode) return;
+      orderMode = newMode;
+      selectedPhase = "all";
+      try {
+        localStorage.setItem(MODE_STORAGE_KEY, orderMode);
+      } catch (err) {
+        console.error("Mod tercihi kaydedilemedi:", err);
+      }
+      updateModeUI();
+      populateGroupSelect();
+      renderAll();
+      showToast(orderMode === "release" ? "📅 Çıkış Sırasına geçildi" : "⏳ Hikaye Sırasına (Kronolojik) geçildi");
+    }
+
+    // Mod butonlarının ve alt başlığın görünümünü güncelle
+    function updateModeUI() {
+      const btnRelease = document.getElementById("btnModeRelease");
+      const btnChrono = document.getElementById("btnModeChrono");
+      const headerSubtitle = document.getElementById("headerSubtitle");
+
+      const activeBtnClass = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer bg-marvelRed text-white shadow-sm";
+      const inactiveBtnClass = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-zinc-400 hover:text-zinc-200";
+
+      if (orderMode === "release") {
+        btnRelease.className = activeBtnClass;
+        btnRelease.setAttribute("aria-selected", "true");
+        btnChrono.className = inactiveBtnClass;
+        btnChrono.setAttribute("aria-selected", "false");
+        headerSubtitle.textContent = "Çıkış Sırasına Göre • Infinity & Multiverse Saga (77 Yapım)";
+      } else {
+        btnChrono.className = activeBtnClass;
+        btnChrono.setAttribute("aria-selected", "true");
+        btnRelease.className = inactiveBtnClass;
+        btnRelease.setAttribute("aria-selected", "false");
+        headerSubtitle.textContent = "Hikaye Sırasına Göre (Kronolojik Zaman Çizelgesi • 77 Yapım)";
+      }
+    }
+
+    // Aktif moda göre Faz veya Kronolojik Dönem dropdown seçeneklerini doldur
+    function populateGroupSelect() {
+      const phaseSelect = document.getElementById("phaseSelect");
+      if (orderMode === "release") {
+        phaseSelect.innerHTML = `
+          <option value="all">Tüm Fazlar (Faz 1 – Faz 6)</option>
+          <option value="infinity">Infinity Saga (Faz 1 – 3)</option>
+          <option value="multiverse">Multiverse Saga (Faz 4 – 6)</option>
+          <option value="Faz 1">Faz 1 (2008 – 2012)</option>
+          <option value="Faz 2">Faz 2 (2013 – 2015)</option>
+          <option value="Faz 3">Faz 3 (2016 – 2019)</option>
+          <option value="Faz 4">Faz 4 (2021 – 2022)</option>
+          <option value="Faz 5">Faz 5 (2023 – 2025)</option>
+          <option value="Faz 6">Faz 6 (2025 – 2026)</option>
+        `;
+      } else {
+        phaseSelect.innerHTML = `
+          <option value="all">Tüm Zaman Çizelgesi (1940'lar – 2026)</option>
+          ${CHRONO_ERAS.map(era => `<option value="${era.key}">${era.key}</option>`).join("")}
+        `;
+      }
+      phaseSelect.value = selectedPhase;
     }
 
     // Kısa bildirim göster
@@ -508,17 +616,21 @@
       renderAll();
     }
 
-    // Bir fazın tamamını işaretle veya sıfırla
-    function togglePhaseComplete(phaseName) {
-      const phaseItems = MCU_ITEMS.filter(item => item.phase === phaseName);
-      const allWatched = phaseItems.every(item => watchedSet.has(item.id));
+    // Bir fazın veya kronolojik dönemin tamamını işaretle veya sıfırla
+    function toggleGroupComplete(groupKey) {
+      const groupItems = orderMode === "release"
+        ? MCU_ITEMS.filter(item => item.phase === groupKey)
+        : MCU_ITEMS.filter(item => item.chronoEra === groupKey);
+
+      const allWatched = groupItems.every(item => watchedSet.has(item.id));
+      const shortLabel = groupKey.split(":")[0];
 
       if (allWatched) {
-        phaseItems.forEach(item => watchedSet.delete(item.id));
-        showToast(`${phaseName} işaretleri kaldırıldı`);
+        groupItems.forEach(item => watchedSet.delete(item.id));
+        showToast(`${shortLabel} işaretleri kaldırıldı`);
       } else {
-        phaseItems.forEach(item => watchedSet.add(item.id));
-        showToast(`${phaseName} tamamlandı olarak işaretlendi!`);
+        groupItems.forEach(item => watchedSet.add(item.id));
+        showToast(`${shortLabel} tamamlandı olarak işaretlendi!`);
       }
       saveProgress();
       renderAll();
@@ -561,10 +673,16 @@
       updateStatBox("statSpecial", "statSpecialPct", counts.special);
     }
 
-    // "Sıradaki Yapım" kartını güncelle
+    // Aktif moda göre sıralanmış ana listeyi döndür
+    function getOrderedDataset() {
+      return orderMode === "release" ? MCU_ITEMS : CHRONO_SORTED_BASE;
+    }
+
+    // "Sıradaki Yapım" kartını aktif moda göre güncelle
     function updateUpNext() {
       const container = document.getElementById("upNextContent");
-      const nextItem = MCU_ITEMS.find(item => !watchedSet.has(item.id));
+      const orderedList = getOrderedDataset();
+      const nextItem = orderedList.find(item => !watchedSet.has(item.id));
 
       if (!nextItem) {
         container.innerHTML = `
@@ -583,26 +701,35 @@
         return;
       }
 
-      const paddedId = String(nextItem.id).padStart(2, "0");
+      const activeRank = orderMode === "release" ? nextItem.id : nextItem.chronoRank;
+      const paddedId = String(activeRank).padStart(2, "0");
+      const modeBadge = orderMode === "release" ? "Çıkış Sırası" : "Hikaye Sırası";
+      const contextLabel = orderMode === "release"
+        ? `${nextItem.saga} (${nextItem.phase})`
+        : `Zaman: ${nextItem.storyTime} • ${nextItem.phase}`;
+
       container.innerHTML = `
         <div class="space-y-1 min-w-0">
           <div class="flex flex-wrap items-center gap-2">
             <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-marvelRed">
-              Sıradaki Yapım
+              Sıradaki Yapım (${modeBadge})
             </span>
             <span class="text-zinc-600">•</span>
             <span class="text-xs font-mono text-zinc-400">#${paddedId} / 77</span>
             <span class="text-zinc-600">•</span>
-            <span class="text-xs text-zinc-400">${nextItem.saga} (${nextItem.phase})</span>
+            <span class="text-xs text-zinc-400">${contextLabel}</span>
           </div>
           <h2 class="text-base sm:text-lg font-bold text-white truncate">
             ${nextItem.title}
           </h2>
-          <div class="flex items-center gap-2 text-xs text-zinc-400">
+          <div class="flex flex-wrap items-center gap-2 text-xs text-zinc-400">
             <span class="px-2 py-0.5 rounded bg-obsidian border border-borderLine text-zinc-300 font-medium">
               ${nextItem.type}
             </span>
-            <span class="font-mono">${nextItem.year}</span>
+            ${orderMode === "chrono"
+              ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/25 text-amber-300 font-mono">⏳ ${nextItem.storyTime}</span>`
+              : `<span class="font-mono">${nextItem.year}</span>`
+            }
           </div>
         </div>
         <div class="shrink-0">
@@ -626,7 +753,8 @@
       saveProgress();
       const item = MCU_ITEMS.find(i => i.id === id);
       if (item) {
-        showToast(`#${String(id).padStart(2, "0")} ${item.title} izlendi işaretlendi`);
+        const displayNum = orderMode === "release" ? item.id : item.chronoRank;
+        showToast(`#${String(displayNum).padStart(2, "0")} ${item.title} izlendi işaretlendi`);
       }
       renderAll();
     };
@@ -650,8 +778,9 @@
     // Filtreleme mantığı
     function getFilteredItems() {
       const q = searchQuery.trim().toLowerCase();
+      const sourceList = getOrderedDataset();
 
-      return MCU_ITEMS.filter(item => {
+      return sourceList.filter(item => {
         // Durum / Kategori filtresi
         if (activeFilter === "unwatched" && watchedSet.has(item.id)) return false;
         if (activeFilter === "watched" && !watchedSet.has(item.id)) return false;
@@ -659,28 +788,118 @@
         if (activeFilter === "series" && item.category !== "series") return false;
         if (activeFilter === "anim_special" && item.category !== "anim" && item.category !== "special") return false;
 
-        // Faz / Saga filtresi
-        if (selectedPhase === "infinity" && item.saga !== "Infinity Saga") return false;
-        if (selectedPhase === "multiverse" && item.saga !== "Multiverse Saga") return false;
-        if (selectedPhase.startsWith("Faz ") && item.phase !== selectedPhase) return false;
+        // Faz / Saga veya Kronolojik Dönem filtresi
+        if (orderMode === "release") {
+          if (selectedPhase === "infinity" && item.saga !== "Infinity Saga") return false;
+          if (selectedPhase === "multiverse" && item.saga !== "Multiverse Saga") return false;
+          if (selectedPhase.startsWith("Faz ") && item.phase !== selectedPhase) return false;
+        } else {
+          if (selectedPhase !== "all" && item.chronoEra !== selectedPhase) return false;
+        }
 
         // Arama metni filtresi
         if (q) {
-          const idStr = `#${String(item.id).padStart(2, "0")}`;
-          const rawIdStr = String(item.id);
+          const activeNum = orderMode === "release" ? item.id : item.chronoRank;
+          const idStr = `#${String(activeNum).padStart(2, "0")}`;
+          const rawIdStr = String(activeNum);
           const matchTitle = item.title.toLowerCase().includes(q);
           const matchYear = item.year.toLowerCase().includes(q);
+          const matchStoryTime = item.storyTime.toLowerCase().includes(q);
           const matchType = item.type.toLowerCase().includes(q);
           const matchPhase = item.phase.toLowerCase().includes(q);
           const matchId = idStr.includes(q) || rawIdStr === q;
-          if (!matchTitle && !matchYear && !matchType && !matchPhase && !matchId) return false;
+          if (!matchTitle && !matchYear && !matchStoryTime && !matchType && !matchPhase && !matchId) return false;
         }
 
         return true;
       });
     }
 
-    // Ana listeyi oluştur
+    // Tek bir satırın HTML çıktısını üret
+    function renderRowHTML(item) {
+      const isChecked = watchedSet.has(item.id);
+      const displayNum = orderMode === "release" ? item.id : item.chronoRank;
+      const paddedNum = String(displayNum).padStart(2, "0");
+      const badgeClass = getTypeBadgeClass(item.category);
+
+      const rightMetaHTML = orderMode === "release"
+        ? `
+          <span class="text-[11px] font-medium px-2 py-0.5 rounded border ${isChecked ? 'opacity-50 ' + badgeClass : badgeClass}">
+            ${item.type}
+          </span>
+          <span class="font-mono text-xs w-24 text-left sm:text-right ${isChecked ? 'text-zinc-600' : 'text-zinc-400'}">
+            ${item.year}
+          </span>
+        `
+        : `
+          <span class="text-[11px] font-mono font-medium px-2 py-0.5 rounded border ${
+            isChecked
+              ? 'opacity-50 bg-amber-500/10 text-amber-300 border-amber-500/25'
+              : 'bg-amber-500/10 text-amber-300 border-amber-500/25'
+          }" title="Hikaye Zamanı">
+            ⏳ ${item.storyTime}
+          </span>
+          <span class="text-[11px] font-medium px-2 py-0.5 rounded border ${isChecked ? 'opacity-50 ' + badgeClass : badgeClass}">
+            ${item.type}
+          </span>
+          <span class="hidden md:inline-block font-mono text-[11px] text-zinc-500 w-16 text-right" title="Çıkış Sırası ve Yılı">
+            #${String(item.id).padStart(2, "0")} • ${item.phase}
+          </span>
+        `;
+
+      return `
+        <li>
+          <label
+            for="chk-${item.id}"
+            class="group flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 transition-colors cursor-pointer select-none ${
+              isChecked ? 'bg-obsidian/35 hover:bg-obsidian/60' : 'hover:bg-surfaceHover'
+            }"
+          >
+            <!-- Özel Checkbox -->
+            <div class="relative flex items-center justify-center shrink-0">
+              <input
+                id="chk-${item.id}"
+                type="checkbox"
+                ${isChecked ? "checked" : ""}
+                onchange="handleItemCheck(${item.id})"
+                class="peer sr-only"
+              />
+              <div class="w-5 h-5 rounded-md border transition-all flex items-center justify-center ${
+                isChecked
+                  ? 'bg-marvelRed border-marvelRed text-white animate-check'
+                  : 'bg-obsidian border-zinc-600 group-hover:border-zinc-400 text-transparent'
+              }">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Sıra Numarası -->
+            <span class="font-mono text-xs sm:text-sm font-semibold w-8 shrink-0 ${
+              isChecked ? 'text-zinc-600' : 'text-zinc-400 group-hover:text-zinc-200'
+            }">
+              #${paddedNum}
+            </span>
+
+            <!-- Yapım Adı ve Bilgiler -->
+            <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-4">
+              <span class="text-sm sm:text-[15px] font-medium truncate transition-colors ${
+                isChecked ? 'line-through text-zinc-500' : 'text-zinc-100 group-hover:text-white'
+              }">
+                ${item.title}
+              </span>
+
+              <div class="flex flex-wrap items-center gap-2 shrink-0">
+                ${rightMetaHTML}
+              </div>
+            </div>
+          </label>
+        </li>
+      `;
+    }
+
+    // Ana listeyi aktif moda göre oluştur
     function renderList() {
       const container = document.getElementById("watchlistContainer");
       const filtered = getFilteredItems();
@@ -695,137 +914,128 @@
         return;
       }
 
-      // Saga ve Fazlara göre grupla
-      const sagas = ["Infinity Saga", "Multiverse Saga"];
       let html = "";
 
-      sagas.forEach(sagaName => {
-        const sagaItems = filtered.filter(i => i.saga === sagaName);
-        if (sagaItems.length === 0) return;
+      if (orderMode === "release") {
+        // ÇIKIŞ SIRASI: Saga ve Fazlara göre grupla
+        const sagas = ["Infinity Saga", "Multiverse Saga"];
 
-        // Saga Başlığı
+        sagas.forEach(sagaName => {
+          const sagaItems = filtered.filter(i => i.saga === sagaName);
+          if (sagaItems.length === 0) return;
+
+          html += `
+            <div class="space-y-5">
+              <div class="flex items-center gap-3 pt-2">
+                <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-zinc-400">
+                  ${sagaName}
+                </h2>
+                <div class="h-px flex-1 bg-borderLine"></div>
+              </div>
+          `;
+
+          const phasesInSaga = [...new Set(sagaItems.map(i => i.phase))];
+
+          phasesInSaga.forEach(phaseName => {
+            const visiblePhaseItems = sagaItems.filter(i => i.phase === phaseName);
+            const allPhaseItems = MCU_ITEMS.filter(i => i.phase === phaseName);
+            const phaseWatchedCount = allPhaseItems.filter(i => watchedSet.has(i.id)).length;
+            const isPhaseDone = phaseWatchedCount === allPhaseItems.length;
+            const meta = PHASE_META[phaseName];
+            const escapedKey = phaseName.replace(/'/g, "\\'");
+
+            html += `
+              <div class="bg-surface border border-borderLine rounded-xl overflow-hidden">
+                <div class="px-4 sm:px-5 py-3.5 bg-obsidian/50 border-b border-borderLine flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div>
+                    <div class="flex items-center gap-2.5">
+                      <h3 class="text-sm sm:text-base font-bold text-white">${phaseName}</h3>
+                      <span class="text-xs font-mono text-zinc-500">${meta.years}</span>
+                      <span class="text-xs font-mono px-2 py-0.5 rounded bg-surface border border-borderLine ${isPhaseDone ? 'text-emerald-400 border-emerald-900/50' : 'text-zinc-300'}">
+                        ${phaseWatchedCount} / ${allPhaseItems.length}
+                      </span>
+                    </div>
+                    <p class="text-xs text-zinc-500 mt-0.5">${meta.subtitle}</p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onclick="handleGroupToggle('${escapedKey}')"
+                    class="self-start sm:self-auto px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                      isPhaseDone
+                        ? 'bg-obsidian text-zinc-400 border-borderLine hover:text-zinc-200'
+                        : 'bg-surface hover:bg-surfaceHover text-zinc-200 border-borderLine'
+                    }"
+                  >
+                    ${isPhaseDone ? 'Faz İşaretlerini Kaldır' : 'Fazı Tamamla'}
+                  </button>
+                </div>
+
+                <ul class="divide-y divide-borderLine">
+                  ${visiblePhaseItems.map(renderRowHTML).join("")}
+                </ul>
+              </div>
+            `;
+          });
+
+          html += `</div>`;
+        });
+      } else {
+        // HİKAYE SIRASI (KRONOLOJİK): Zaman Çizelgesi Dönemlerine göre grupla
         html += `
           <div class="space-y-5">
             <div class="flex items-center gap-3 pt-2">
-              <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-zinc-400">
-                ${sagaName}
+              <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-amber-400/90">
+                ⏳ Kronolojik Hikaye Zaman Çizelgesi
               </h2>
               <div class="h-px flex-1 bg-borderLine"></div>
             </div>
         `;
 
-        // Bu Saga'daki benzersiz fazları sırayla gez
-        const phasesInSaga = [...new Set(sagaItems.map(i => i.phase))];
+        CHRONO_ERAS.forEach(eraObj => {
+          const visibleEraItems = filtered.filter(i => i.chronoEra === eraObj.key);
+          if (visibleEraItems.length === 0) return;
 
-        phasesInSaga.forEach(phaseName => {
-          const visiblePhaseItems = sagaItems.filter(i => i.phase === phaseName);
-          const allPhaseItems = MCU_ITEMS.filter(i => i.phase === phaseName);
-          const phaseWatchedCount = allPhaseItems.filter(i => watchedSet.has(i.id)).length;
-          const isPhaseDone = phaseWatchedCount === allPhaseItems.length;
-          const meta = PHASE_META[phaseName];
+          const allEraItems = CHRONO_SORTED_BASE.filter(i => i.chronoEra === eraObj.key);
+          const eraWatchedCount = allEraItems.filter(i => watchedSet.has(i.id)).length;
+          const isEraDone = eraWatchedCount === allEraItems.length;
+          const escapedKey = eraObj.key.replace(/'/g, "\\'");
 
           html += `
             <div class="bg-surface border border-borderLine rounded-xl overflow-hidden">
-              <!-- Faz Başlık Çubuğu -->
               <div class="px-4 sm:px-5 py-3.5 bg-obsidian/50 border-b border-borderLine flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <div>
-                  <div class="flex items-center gap-2.5">
-                    <h3 class="text-sm sm:text-base font-bold text-white">${phaseName}</h3>
-                    <span class="text-xs font-mono text-zinc-500">${meta.years}</span>
-                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-surface border border-borderLine ${isPhaseDone ? 'text-emerald-400 border-emerald-900/50' : 'text-zinc-300'}">
-                      ${phaseWatchedCount} / ${allPhaseItems.length}
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    <h3 class="text-sm sm:text-base font-bold text-white">${eraObj.key}</h3>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-surface border border-borderLine ${isEraDone ? 'text-emerald-400 border-emerald-900/50' : 'text-zinc-300'}">
+                      ${eraWatchedCount} / ${allEraItems.length}
                     </span>
                   </div>
-                  <p class="text-xs text-zinc-500 mt-0.5">${meta.subtitle}</p>
+                  <p class="text-xs text-zinc-500 mt-0.5">${eraObj.subtitle}</p>
                 </div>
 
                 <button
                   type="button"
-                  onclick="handlePhaseToggle('${phaseName}')"
+                  onclick="handleGroupToggle('${escapedKey}')"
                   class="self-start sm:self-auto px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
-                    isPhaseDone
+                    isEraDone
                       ? 'bg-obsidian text-zinc-400 border-borderLine hover:text-zinc-200'
                       : 'bg-surface hover:bg-surfaceHover text-zinc-200 border-borderLine'
                   }"
                 >
-                  ${isPhaseDone ? 'Faz İşaretlerini Kaldır' : 'Fazı Tamamla'}
+                  ${isEraDone ? 'Dönem İşaretlerini Kaldır' : 'Dönemi Tamamla'}
                 </button>
               </div>
 
-              <!-- Faz İçindeki Yapımlar -->
               <ul class="divide-y divide-borderLine">
-                ${visiblePhaseItems.map(item => {
-                  const isChecked = watchedSet.has(item.id);
-                  const paddedNum = String(item.id).padStart(2, "0");
-                  const badgeClass = getTypeBadgeClass(item.category);
-
-                  return `
-                    <li>
-                      <label
-                        for="chk-${item.id}"
-                        class="group flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 transition-colors cursor-pointer select-none ${
-                          isChecked ? 'bg-obsidian/35 hover:bg-obsidian/60' : 'hover:bg-surfaceHover'
-                        }"
-                      >
-                        <!-- Özel Checkbox -->
-                        <div class="relative flex items-center justify-center shrink-0">
-                          <input
-                            id="chk-${item.id}"
-                            type="checkbox"
-                            ${isChecked ? "checked" : ""}
-                            onchange="handleItemCheck(${item.id})"
-                            class="peer sr-only"
-                          />
-                          <div class="w-5 h-5 rounded-md border transition-all flex items-center justify-center ${
-                            isChecked
-                              ? 'bg-marvelRed border-marvelRed text-white animate-check'
-                              : 'bg-obsidian border-zinc-600 group-hover:border-zinc-400 text-transparent'
-                          }">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                        </div>
-
-                        <!-- Sıra Numarası -->
-                        <span class="font-mono text-xs sm:text-sm font-semibold w-8 shrink-0 ${
-                          isChecked ? 'text-zinc-600' : 'text-zinc-400 group-hover:text-zinc-200'
-                        }">
-                          #${paddedNum}
-                        </span>
-
-                        <!-- Yapım Adı ve Bilgiler -->
-                        <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-4">
-                          <span class="text-sm sm:text-[15px] font-medium truncate transition-colors ${
-                            isChecked ? 'line-through text-zinc-500' : 'text-zinc-100 group-hover:text-white'
-                          }">
-                            ${item.title}
-                          </span>
-
-                          <div class="flex items-center gap-2 shrink-0">
-                            <span class="text-[11px] font-medium px-2 py-0.5 rounded border ${
-                              isChecked ? 'opacity-50 ' + badgeClass : badgeClass
-                            }">
-                              ${item.type}
-                            </span>
-                            <span class="font-mono text-xs w-24 text-left sm:text-right ${
-                              isChecked ? 'text-zinc-600' : 'text-zinc-400'
-                            }">
-                              ${item.year}
-                            </span>
-                          </div>
-                        </div>
-                      </label>
-                    </li>
-                  `;
-                }).join("")}
+                ${visibleEraItems.map(renderRowHTML).join("")}
               </ul>
             </div>
           `;
         });
 
         html += `</div>`;
-      });
+      }
 
       container.innerHTML = html;
     }
@@ -835,8 +1045,8 @@
       toggleItem(id);
     };
 
-    window.handlePhaseToggle = function(phaseName) {
-      togglePhaseComplete(phaseName);
+    window.handleGroupToggle = function(groupKey) {
+      toggleGroupComplete(groupKey);
     };
 
     // Tüm ekranı senkronize et
@@ -849,7 +1059,13 @@
     // Olay Dinleyicileri (Event Listeners)
     document.addEventListener("DOMContentLoaded", () => {
       loadProgress();
+      updateModeUI();
+      populateGroupSelect();
       renderAll();
+
+      // Sıralama Modu Butonları
+      document.getElementById("btnModeRelease").addEventListener("click", () => setOrderMode("release"));
+      document.getElementById("btnModeChrono").addEventListener("click", () => setOrderMode("chrono"));
 
       // Filtre sekmeleri
       const filterTabs = document.querySelectorAll(".filter-tab");
@@ -867,7 +1083,7 @@
         });
       });
 
-      // Faz dropdown seçimi
+      // Faz / Dönem dropdown seçimi
       const phaseSelect = document.getElementById("phaseSelect");
       phaseSelect.addEventListener("change", (e) => {
         selectedPhase = e.target.value;
@@ -897,6 +1113,7 @@
         const backupData = {
           app: "MCU Tam İzleme Listesi",
           exportedAt: new Date().toISOString(),
+          orderMode: orderMode,
           totalItems: MCU_ITEMS.length,
           watchedIds: Array.from(watchedSet).sort((a, b) => a - b)
         };
