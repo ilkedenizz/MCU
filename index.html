@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MCU Watchlist // Tam İzleme Takibi</title>
+  <title>MCU & Multiverse Watchlist // 105 Yapımlık Tam İzleme Takibi</title>
   <style>
     :root {
       --bg: #0a0a0c;
@@ -20,6 +20,7 @@
       --series: #a855f7;
       --anim: #f59e0b;
       --special: #14b8a6;
+      --multiverse: #ec4899;
       --radius: 10px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
@@ -35,7 +36,7 @@
       padding: 24px 16px 80px;
     }
 
-    .container { max-width: 960px; margin: 0 auto; }
+    .container { max-width: 980px; margin: 0 auto; }
 
     header {
       display: flex;
@@ -88,12 +89,12 @@
 
     .dashboard {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.45fr 1fr;
       gap: 16px;
       margin-bottom: 20px;
     }
 
-    @media (max-width: 720px) { .dashboard { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .dashboard { grid-template-columns: 1fr; } }
 
     .card {
       background: var(--surface);
@@ -136,26 +137,28 @@
 
     .mini-stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
     }
+
+    @media (max-width: 520px) { .mini-stats { grid-template-columns: repeat(3, 1fr); } }
 
     .mini-box {
       background: #0e0e12;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 8px;
+      padding: 7px 4px;
       text-align: center;
     }
 
     .mini-box span {
       display: block;
-      font-size: 11px;
+      font-size: 10px;
       color: var(--muted);
       margin-bottom: 2px;
     }
 
-    .mini-box strong { font-family: var(--mono); font-size: 13px; }
+    .mini-box strong { font-family: var(--mono); font-size: 12px; }
 
     .up-next-card {
       display: flex;
@@ -322,7 +325,7 @@
       font-family: var(--mono);
       font-size: 12px;
       color: var(--muted);
-      width: 30px;
+      width: 34px;
       flex-shrink: 0;
     }
 
@@ -357,6 +360,7 @@
     .tag-series { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; }
     .tag-anim { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
     .tag-special { background: rgba(20, 184, 166, 0.15); color: #5eead4; }
+    .tag-multiverse { background: rgba(236, 72, 153, 0.16); color: #f9a8d4; }
 
     .toast {
       position: fixed;
@@ -384,10 +388,10 @@
   <header>
     <div>
       <div class="brand">
-        <span class="badge-mcu">MCU</span>
-        <h1>Marvel Sinematik Evreni İzleme Listesi</h1>
+        <span class="badge-mcu">MARVEL</span>
+        <h1>MCU & Multiverse Tam İzleme Listesi</h1>
       </div>
-      <p class="subtitle">77 Yapım • İşaretlerin hem tarayıcına hem de sayfa linkine (#w=) otomatik işlenir</p>
+      <p class="subtitle">105 Yapım • Ana MCU + Spider-Man, Venom, X-Men, Deadpool & Klasik Evrenler</p>
     </div>
 
     <div class="mode-switch" role="group" aria-label="Sıralama Modu">
@@ -400,16 +404,17 @@
     <div class="card">
       <div class="progress-header">
         <span class="progress-title">Genel İlerleme</span>
-        <span class="progress-stat" id="totalStat">0 / 77 (%0)</span>
+        <span class="progress-stat" id="totalStat">0 / 105 (%0)</span>
       </div>
       <div class="bar-track">
         <div class="bar-fill" id="progressBar"></div>
       </div>
       <div class="mini-stats">
-        <div class="mini-box"><span>Film</span><strong id="statMovie">0/38</strong></div>
+        <div class="mini-box"><span>MCU Film</span><strong id="statMovie">0/38</strong></div>
         <div class="mini-box"><span>Dizi</span><strong id="statSeries">0/31</strong></div>
         <div class="mini-box"><span>Animasyon</span><strong id="statAnim">0/6</strong></div>
         <div class="mini-box"><span>Özel</span><strong id="statSpecial">0/2</strong></div>
+        <div class="mini-box"><span>Multiverse</span><strong id="statMultiverse">0/28</strong></div>
       </div>
     </div>
 
@@ -424,11 +429,12 @@
   </section>
 
   <section class="controls">
-    <input type="text" class="search-input" id="searchInput" placeholder="Film, dizi, yıl veya #sıra ara..." oninput="render()" />
+    <input type="text" class="search-input" id="searchInput" placeholder="Spider-Man, X-Men, Venom, yıl veya #sıra ara..." oninput="render()" />
     <select class="filter-select" id="typeFilter" onchange="render()">
-      <option value="all">Tüm Türler</option>
-      <option value="movie">Sadece Filmler (38)</option>
-      <option value="series">Sadece Diziler (31)</option>
+      <option value="all">Tüm Evrenler & Türler (105)</option>
+      <option value="movie">Ana MCU Filmleri (38)</option>
+      <option value="series">Diziler — Disney+ & Defenders (31)</option>
+      <option value="multiverse">Multiverse Filmleri — Sony & Fox (28)</option>
       <option value="anim">Animasyon / Kısa (6)</option>
       <option value="special">Özel Bölümler (2)</option>
     </select>
@@ -460,91 +466,125 @@
 
 <script>
 const MCU_ITEMS = [
-  { id: 1, title: "Iron Man", year: 2008, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 4, storyTime: "2010" },
-  { id: 2, title: "The Incredible Hulk", year: 2008, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 6, storyTime: "2011" },
-  { id: 3, title: "Iron Man 2", year: 2010, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 5, storyTime: "2011" },
-  { id: 4, title: "Thor", year: 2011, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 7, storyTime: "2011" },
-  { id: 5, title: "Captain America: The First Avenger", year: 2011, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 1, storyTime: "1943–1945" },
-  { id: 6, title: "The Avengers", year: 2012, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 8, storyTime: "2012" },
-  { id: 7, title: "Iron Man 3", year: 2013, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 10, storyTime: "Aralık 2012" },
-  { id: 8, title: "Thor: The Dark World", year: 2013, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 9, storyTime: "2013" },
-  { id: 9, title: "Captain America: The Winter Soldier", year: 2014, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 11, storyTime: "2014" },
-  { id: 10, title: "Guardians of the Galaxy", year: 2014, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 12, storyTime: "2014" },
-  { id: 11, title: "Daredevil – Sezon 1", year: 2015, type: "series", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 15, storyTime: "2015" },
-  { id: 12, title: "Avengers: Age of Ultron", year: 2015, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 17, storyTime: "2015" },
-  { id: 13, title: "Ant-Man", year: 2015, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 18, storyTime: "2015" },
-  { id: 14, title: "Jessica Jones – Sezon 1", year: 2015, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 16, storyTime: "2015" },
-  { id: 15, title: "Daredevil – Sezon 2", year: 2016, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 19, storyTime: "2015–2016" },
-  { id: 16, title: "Captain America: Civil War", year: 2016, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 22, storyTime: "2016" },
-  { id: 17, title: "Luke Cage – Sezon 1", year: 2016, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 20, storyTime: "2016" },
-  { id: 18, title: "Doctor Strange", year: 2016, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 26, storyTime: "2016–2017" },
-  { id: 19, title: "Iron Fist – Sezon 1", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 21, storyTime: "2016" },
-  { id: 20, title: "Guardians of the Galaxy Vol. 2", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 13, storyTime: "2014" },
-  { id: 21, title: "Spider-Man: Homecoming", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 24, storyTime: "2016" },
-  { id: 22, title: "The Defenders", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 25, storyTime: "2016" },
-  { id: 23, title: "Thor: Ragnarok", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 31, storyTime: "2017" },
-  { id: 24, title: "The Punisher – Sezon 1", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 27, storyTime: "2016" },
-  { id: 25, title: "Black Panther", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 23, storyTime: "2016" },
-  { id: 26, title: "Jessica Jones – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 28, storyTime: "2017" },
-  { id: 27, title: "Avengers: Infinity War", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 34, storyTime: "2018" },
-  { id: 28, title: "Luke Cage – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 29, storyTime: "2017" },
-  { id: 29, title: "Ant-Man and the Wasp", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 33, storyTime: "2018" },
-  { id: 30, title: "Iron Fist – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 30, storyTime: "2017" },
-  { id: 31, title: "Daredevil – Sezon 3", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 32, storyTime: "2017" },
-  { id: 32, title: "The Punisher – Sezon 2", year: 2019, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 35, storyTime: "2018" },
-  { id: 33, title: "Captain Marvel", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 3, storyTime: "1995" },
-  { id: 34, title: "Avengers: Endgame", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 37, storyTime: "2023" },
-  { id: 35, title: "Jessica Jones – Sezon 3", year: 2019, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 36, storyTime: "2018" },
-  { id: 36, title: "Spider-Man: Far From Home", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 43, storyTime: "Yaz 2024" },
-  { id: 37, title: "WandaVision", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 39, storyTime: "Kasım 2023" },
-  { id: 38, title: "The Falcon and the Winter Soldier", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 41, storyTime: "Nisan 2024" },
-  { id: 39, title: "Loki – Sezon 1", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 38, storyTime: "Zaman Dışı (TVA)" },
-  { id: 40, title: "Black Widow", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 23.5, storyTime: "2016" },
-  { id: 41, title: "What If...? – Sezon 1", year: 2021, type: "anim", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 40, storyTime: "Çoklu Evren" },
-  { id: 42, title: "Shang-Chi and the Legend of the Ten Rings", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 40.5, storyTime: "Nisan 2024" },
-  { id: 43, title: "Eternals", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 42, storyTime: "Sonbahar 2023" },
-  { id: 44, title: "Hawkeye", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 46, storyTime: "Aralık 2024" },
-  { id: 45, title: "Spider-Man: No Way Home", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 44, storyTime: "Kasım 2024" },
-  { id: 46, title: "Moon Knight", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 47, storyTime: "2025" },
-  { id: 47, title: "Doctor Strange in the Multiverse of Madness", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 45, storyTime: "Kasım 2024" },
-  { id: 48, title: "Ms. Marvel", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 50, storyTime: "Sonbahar 2025" },
-  { id: 49, title: "Thor: Love and Thunder", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 51, storyTime: "2025" },
-  { id: 50, title: "I Am Groot – Sezon 1", year: 2022, type: "anim", phase: "Faz 4 (2021–2022)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 14, storyTime: "2014" },
-  { id: 51, title: "She-Hulk: Attorney at Law", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 49, storyTime: "2025" },
-  { id: 52, title: "Werewolf by Night", year: 2022, type: "special", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 52, storyTime: "2025" },
-  { id: 53, title: "Black Panther: Wakanda Forever", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 48, storyTime: "2025" },
-  { id: 54, title: "The Guardians of the Galaxy Holiday Special", year: 2022, type: "special", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 53, storyTime: "Aralık 2025" },
-  { id: 55, title: "Ant-Man and the Wasp: Quantumania", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 54, storyTime: "2026" },
-  { id: 56, title: "Guardians of the Galaxy Vol. 3", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 55, storyTime: "2026" },
-  { id: 57, title: "Secret Invasion", year: 2023, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 56, storyTime: "2026" },
-  { id: 58, title: "I Am Groot – Sezon 2", year: 2023, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 14.5, storyTime: "2014" },
-  { id: 59, title: "Loki – Sezon 2", year: 2023, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 58, storyTime: "Zaman Dışı (TVA)" },
-  { id: 60, title: "The Marvels", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 57, storyTime: "2026" },
-  { id: 61, title: "What If...? – Sezon 2", year: 2023, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59, storyTime: "Çoklu Evren" },
-  { id: 62, title: "Echo", year: 2024, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 48.5, storyTime: "Mayıs 2025" },
-  { id: 63, title: "Deadpool & Wolverine", year: 2024, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 60, storyTime: "2024 / Void" },
-  { id: 64, title: "Agatha All Along", year: 2024, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 61, storyTime: "2026" },
-  { id: 65, title: "What If...? – Sezon 3", year: 2024, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 62, storyTime: "Çoklu Evren" },
-  { id: 66, title: "Your Friendly Neighborhood Spider-Man – Sezon 1", year: 2025, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 63, storyTime: "Alternatif Evren" },
-  { id: 67, title: "Captain America: Brave New World", year: 2025, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 65, storyTime: "2027" },
-  { id: 68, title: "Daredevil: Born Again – Sezon 1", year: 2025, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 64, storyTime: "2026–2027" },
-  { id: 69, title: "Thunderbolts*", year: 2025, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 66, storyTime: "2027" },
-  { id: 70, title: "Ironheart", year: 2025, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 67, storyTime: "2027" },
-  { id: 71, title: "The Fantastic Four: First Steps", year: 2025, type: "movie", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 68, storyTime: "1960'lar (Alt. Evren)" },
-  { id: 72, title: "Eyes of Wakanda", year: 2025, type: "anim", phase: "Faz 6 (2025–2026)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 2, storyTime: "Antik Çağ" },
-  { id: 73, title: "Marvel Zombies", year: 2025, type: "anim", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 69, storyTime: "Alternatif Evren" },
-  { id: 74, title: "Wonder Man", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 70, storyTime: "2027" },
-  { id: 75, title: "Daredevil: Born Again – Sezon 2", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 71, storyTime: "2027" },
-  { id: 76, title: "Spider-Man: Brand New Day", year: 2026, type: "movie", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 72, storyTime: "2027" },
-  { id: 77, title: "VisionQuest", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 73, storyTime: "2027" }
+  // --- ÇEKİRDEK 77 MCU YAPIMI (ID 1-77 KORUNDU) ---
+  { id: 1, title: "Iron Man", year: 2008, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 4, storyTime: "2010", universe: "Earth-616 (MCU)" },
+  { id: 2, title: "The Incredible Hulk", year: 2008, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 6, storyTime: "2011", universe: "Earth-616 (MCU)" },
+  { id: 3, title: "Iron Man 2", year: 2010, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 5, storyTime: "2011", universe: "Earth-616 (MCU)" },
+  { id: 4, title: "Thor", year: 2011, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 7, storyTime: "2011", universe: "Earth-616 (MCU)" },
+  { id: 5, title: "Captain America: The First Avenger", year: 2011, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 1, storyTime: "1943–1945", universe: "Earth-616 (MCU)" },
+  { id: 6, title: "The Avengers", year: 2012, type: "movie", phase: "Faz 1 (2008–2012)", era: "Dönem 2: Kahramanlar Çağı (2008–2012)", storyOrder: 8, storyTime: "2012", universe: "Earth-616 (MCU)" },
+  { id: 7, title: "Iron Man 3", year: 2013, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 10, storyTime: "Aralık 2012", universe: "Earth-616 (MCU)" },
+  { id: 8, title: "Thor: The Dark World", year: 2013, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 9, storyTime: "2013", universe: "Earth-616 (MCU)" },
+  { id: 9, title: "Captain America: The Winter Soldier", year: 2014, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 11, storyTime: "2014", universe: "Earth-616 (MCU)" },
+  { id: 10, title: "Guardians of the Galaxy", year: 2014, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 12, storyTime: "2014", universe: "Earth-616 (MCU)" },
+  { id: 11, title: "Daredevil – Sezon 1", year: 2015, type: "series", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 15, storyTime: "2015", universe: "Earth-616 (MCU)" },
+  { id: 12, title: "Avengers: Age of Ultron", year: 2015, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 17, storyTime: "2015", universe: "Earth-616 (MCU)" },
+  { id: 13, title: "Ant-Man", year: 2015, type: "movie", phase: "Faz 2 (2013–2015)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 18, storyTime: "2015", universe: "Earth-616 (MCU)" },
+  { id: 14, title: "Jessica Jones – Sezon 1", year: 2015, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 16, storyTime: "2015", universe: "Earth-616 (MCU)" },
+  { id: 15, title: "Daredevil – Sezon 2", year: 2016, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 19, storyTime: "2015–2016", universe: "Earth-616 (MCU)" },
+  { id: 16, title: "Captain America: Civil War", year: 2016, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 22, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 17, title: "Luke Cage – Sezon 1", year: 2016, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 20, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 18, title: "Doctor Strange", year: 2016, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 26, storyTime: "2016–2017", universe: "Earth-616 (MCU)" },
+  { id: 19, title: "Iron Fist – Sezon 1", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 21, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 20, title: "Guardians of the Galaxy Vol. 2", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 13, storyTime: "2014", universe: "Earth-616 (MCU)" },
+  { id: 21, title: "Spider-Man: Homecoming", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 24, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 22, title: "The Defenders", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 25, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 23, title: "Thor: Ragnarok", year: 2017, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 31, storyTime: "2017", universe: "Earth-616 (MCU)" },
+  { id: 24, title: "The Punisher – Sezon 1", year: 2017, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 27, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 25, title: "Black Panther", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 23, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 26, title: "Jessica Jones – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 28, storyTime: "2017", universe: "Earth-616 (MCU)" },
+  { id: 27, title: "Avengers: Infinity War", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 34, storyTime: "2018", universe: "Earth-616 (MCU)" },
+  { id: 28, title: "Luke Cage – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 29, storyTime: "2017", universe: "Earth-616 (MCU)" },
+  { id: 29, title: "Ant-Man and the Wasp", year: 2018, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 33, storyTime: "2018", universe: "Earth-616 (MCU)" },
+  { id: 30, title: "Iron Fist – Sezon 2", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 30, storyTime: "2017", universe: "Earth-616 (MCU)" },
+  { id: 31, title: "Daredevil – Sezon 3", year: 2018, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 32, storyTime: "2017", universe: "Earth-616 (MCU)" },
+  { id: 32, title: "The Punisher – Sezon 2", year: 2019, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 35, storyTime: "2018", universe: "Earth-616 (MCU)" },
+  { id: 33, title: "Captain Marvel", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 3, storyTime: "1995", universe: "Earth-616 (MCU)" },
+  { id: 34, title: "Avengers: Endgame", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 37, storyTime: "2023", universe: "Earth-616 (MCU)" },
+  { id: 35, title: "Jessica Jones – Sezon 3", year: 2019, type: "series", phase: "Faz 3 (2016–2019)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 36, storyTime: "2018", universe: "Earth-616 (MCU)" },
+  { id: 36, title: "Spider-Man: Far From Home", year: 2019, type: "movie", phase: "Faz 3 (2016–2019)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 43, storyTime: "Yaz 2024", universe: "Earth-616 (MCU)" },
+  { id: 37, title: "WandaVision", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 39, storyTime: "Kasım 2023", universe: "Earth-616 (MCU)" },
+  { id: 38, title: "The Falcon and the Winter Soldier", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 41, storyTime: "Nisan 2024", universe: "Earth-616 (MCU)" },
+  { id: 39, title: "Loki – Sezon 1", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 38, storyTime: "Zaman Dışı (TVA)", universe: "Çoklu Evren (TVA)" },
+  { id: 40, title: "Black Widow", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 4: İç Savaş & Sonsuzluk (2016–2018)", storyOrder: 23.5, storyTime: "2016", universe: "Earth-616 (MCU)" },
+  { id: 41, title: "What If...? – Sezon 1", year: 2021, type: "anim", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 40, storyTime: "Çoklu Evren", universe: "Çoklu Evren" },
+  { id: 42, title: "Shang-Chi and the Legend of the Ten Rings", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 40.5, storyTime: "Nisan 2024", universe: "Earth-616 (MCU)" },
+  { id: 43, title: "Eternals", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 42, storyTime: "Sonbahar 2023", universe: "Earth-616 (MCU)" },
+  { id: 44, title: "Hawkeye", year: 2021, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 46, storyTime: "Aralık 2024", universe: "Earth-616 (MCU)" },
+  { id: 45, title: "Spider-Man: No Way Home", year: 2021, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 44, storyTime: "Kasım 2024", universe: "Earth-616 + Multiverse" },
+  { id: 46, title: "Moon Knight", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 47, storyTime: "2025", universe: "Earth-616 (MCU)" },
+  { id: 47, title: "Doctor Strange in the Multiverse of Madness", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 5: Blip Sonrası & Çoklu Evren (2023–2024)", storyOrder: 45, storyTime: "Kasım 2024", universe: "Earth-616 + Multiverse" },
+  { id: 48, title: "Ms. Marvel", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 50, storyTime: "Sonbahar 2025", universe: "Earth-616 (MCU)" },
+  { id: 49, title: "Thor: Love and Thunder", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 51, storyTime: "2025", universe: "Earth-616 (MCU)" },
+  { id: 50, title: "I Am Groot – Sezon 1", year: 2022, type: "anim", phase: "Faz 4 (2021–2022)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 14, storyTime: "2014", universe: "Earth-616 (MCU)" },
+  { id: 51, title: "She-Hulk: Attorney at Law", year: 2022, type: "series", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 49, storyTime: "2025", universe: "Earth-616 (MCU)" },
+  { id: 52, title: "Werewolf by Night", year: 2022, type: "special", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 52, storyTime: "2025", universe: "Earth-616 (MCU)" },
+  { id: 53, title: "Black Panther: Wakanda Forever", year: 2022, type: "movie", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 48, storyTime: "2025", universe: "Earth-616 (MCU)" },
+  { id: 54, title: "The Guardians of the Galaxy Holiday Special", year: 2022, type: "special", phase: "Faz 4 (2021–2022)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 53, storyTime: "Aralık 2025", universe: "Earth-616 (MCU)" },
+  { id: 55, title: "Ant-Man and the Wasp: Quantumania", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 54, storyTime: "2026", universe: "Earth-616 (MCU)" },
+  { id: 56, title: "Guardians of the Galaxy Vol. 3", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 55, storyTime: "2026", universe: "Earth-616 (MCU)" },
+  { id: 57, title: "Secret Invasion", year: 2023, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 56, storyTime: "2026", universe: "Earth-616 (MCU)" },
+  { id: 58, title: "I Am Groot – Sezon 2", year: 2023, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 3: Sokaklar & Yenilmezler (2012–2016)", storyOrder: 14.5, storyTime: "2014", universe: "Earth-616 (MCU)" },
+  { id: 59, title: "Loki – Sezon 2", year: 2023, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 58, storyTime: "Zaman Dışı (TVA)", universe: "Çoklu Evren (TVA)" },
+  { id: 60, title: "The Marvels", year: 2023, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 57, storyTime: "2026", universe: "Earth-616 (MCU)" },
+  { id: 61, title: "What If...? – Sezon 2", year: 2023, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59, storyTime: "Çoklu Evren", universe: "Çoklu Evren" },
+  { id: 62, title: "Echo", year: 2024, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 48.5, storyTime: "Mayıs 2025", universe: "Earth-616 (MCU)" },
+  { id: 63, title: "Deadpool & Wolverine", year: 2024, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 60, storyTime: "2024 / Void", universe: "Earth-10005 + TVA" },
+  { id: 64, title: "Agatha All Along", year: 2024, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 61, storyTime: "2026", universe: "Earth-616 (MCU)" },
+  { id: 65, title: "What If...? – Sezon 3", year: 2024, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 62, storyTime: "Çoklu Evren", universe: "Çoklu Evren" },
+  { id: 66, title: "Your Friendly Neighborhood Spider-Man – Sezon 1", year: 2025, type: "anim", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 63, storyTime: "Alternatif Evren", universe: "Alternatif Evren" },
+  { id: 67, title: "Captain America: Brave New World", year: 2025, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 65, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 68, title: "Daredevil: Born Again – Sezon 1", year: 2025, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 64, storyTime: "2026–2027", universe: "Earth-616 (MCU)" },
+  { id: 69, title: "Thunderbolts*", year: 2025, type: "movie", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 66, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 70, title: "Ironheart", year: 2025, type: "series", phase: "Faz 5 (2023–2025)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 67, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 71, title: "The Fantastic Four: First Steps", year: 2025, type: "movie", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 68, storyTime: "1960'lar (Alt. Evren)", universe: "Earth-828" },
+  { id: 72, title: "Eyes of Wakanda", year: 2025, type: "anim", phase: "Faz 6 (2025–2026)", era: "Dönem 1: Başlangıç & Geçmiş (1943–1995)", storyOrder: 2, storyTime: "Antik Çağ", universe: "Earth-616 (MCU)" },
+  { id: 73, title: "Marvel Zombies", year: 2025, type: "anim", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 69, storyTime: "Alternatif Evren", universe: "Alternatif Evren" },
+  { id: 74, title: "Wonder Man", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 70, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 75, title: "Daredevil: Born Again – Sezon 2", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 71, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 76, title: "Spider-Man: Brand New Day", year: 2026, type: "movie", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 72, storyTime: "2027", universe: "Earth-616 (MCU)" },
+  { id: 77, title: "VisionQuest", year: 2026, type: "series", phase: "Faz 6 (2025–2026)", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 73, storyTime: "2027", universe: "Earth-616 (MCU)" },
+
+  // --- MULTIVERSE GENİŞLETME PAKETİ: SPIDER-MAN, VENOM, X-MEN, DEADPOOL & KLASİKLER (ID 78-105) ---
+  { id: 78, title: "Spider-Man (Tobey Maguire)", year: 2002, type: "multiverse", phase: "Multiverse: Raimi Spider-Man (2002–2007)", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.1, storyTime: "Earth-96283", universe: "Earth-96283 (Sony)" },
+  { id: 79, title: "Spider-Man 2", year: 2004, type: "multiverse", phase: "Multiverse: Raimi Spider-Man (2002–2007)", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.2, storyTime: "Earth-96283", universe: "Earth-96283 (Sony)" },
+  { id: 80, title: "Spider-Man 3", year: 2007, type: "multiverse", phase: "Multiverse: Raimi Spider-Man (2002–2007)", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.3, storyTime: "Earth-96283", universe: "Earth-96283 (Sony)" },
+
+  { id: 81, title: "The Amazing Spider-Man (Andrew Garfield)", year: 2012, type: "multiverse", phase: "Multiverse: Webb Spider-Man (2012–2014)", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.4, storyTime: "Earth-120703", universe: "Earth-120703 (Sony)" },
+  { id: 82, title: "The Amazing Spider-Man 2", year: 2014, type: "multiverse", phase: "Multiverse: Webb Spider-Man (2012–2014)", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.5, storyTime: "Earth-120703", universe: "Earth-120703 (Sony)" },
+
+  { id: 83, title: "Venom", year: 2018, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.6, storyTime: "Earth-688", universe: "Earth-688 (SSU)" },
+  { id: 84, title: "Spider-Man: Into the Spider-Verse", year: 2018, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.7, storyTime: "Earth-1610B", universe: "Spider-Verse" },
+  { id: 85, title: "Venom: Let There Be Carnage", year: 2021, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 0: Paralel Evrenler (No Way Home Öncesi)", storyOrder: 43.8, storyTime: "Earth-688", universe: "Earth-688 (SSU)" },
+  { id: 86, title: "Morbius", year: 2022, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59.1, storyTime: "Earth-688", universe: "Earth-688 (SSU)" },
+  { id: 87, title: "Spider-Man: Across the Spider-Verse", year: 2023, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59.2, storyTime: "Spider-Society", universe: "Spider-Verse" },
+  { id: 88, title: "Madame Web", year: 2024, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59.3, storyTime: "2003 (Alt. Evren)", universe: "Sony Evreni" },
+  { id: 89, title: "Venom: The Last Dance", year: 2024, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59.4, storyTime: "Earth-688 / Knull", universe: "Earth-688 (SSU)" },
+  { id: 90, title: "Kraven the Hunter", year: 2024, type: "multiverse", phase: "Multiverse: Sony Örümcek & Spider-Verse", era: "Dönem 6: Yeni Dünya Düzeni (2025–2026+)", storyOrder: 59.5, storyTime: "Earth-688", universe: "Earth-688 (SSU)" },
+
+  { id: 91, title: "X-Men", year: 2000, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.61, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+  { id: 92, title: "X2: X-Men United", year: 2003, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.62, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+  { id: 93, title: "X-Men: The Last Stand", year: 2006, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.63, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+  { id: 94, title: "X-Men Origins: Wolverine", year: 2009, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.64, storyTime: "1979 (Earth-10005)", universe: "Earth-10005 (Fox)" },
+  { id: 95, title: "X-Men: First Class", year: 2011, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.65, storyTime: "1962 (Earth-10005)", universe: "Earth-10005 (Fox)" },
+  { id: 96, title: "The Wolverine", year: 2013, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.66, storyTime: "2013 (Earth-10005)", universe: "Earth-10005 (Fox)" },
+  { id: 97, title: "X-Men: Days of Future Past", year: 2014, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.67, storyTime: "1973 / 2023", universe: "Earth-10005 (Fox)" },
+  { id: 98, title: "Deadpool", year: 2016, type: "multiverse", phase: "Multiverse: Deadpool & Mutantlar", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.71, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+  { id: 99, title: "X-Men: Apocalypse", year: 2016, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.68, storyTime: "1983 (Yeni Zaman)", universe: "Earth-10005 (Fox)" },
+  { id: 100, title: "Logan", year: 2017, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.73, storyTime: "2029 (Earth-10005)", universe: "Earth-10005 (Fox)" },
+  { id: 101, title: "Deadpool 2", year: 2018, type: "multiverse", phase: "Multiverse: Deadpool & Mutantlar", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.72, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+  { id: 102, title: "Dark Phoenix", year: 2019, type: "multiverse", phase: "Multiverse: Fox X-Men & Wolverine", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.69, storyTime: "1992 (Earth-10005)", universe: "Earth-10005 (Fox)" },
+  { id: 103, title: "The New Mutants", year: 2020, type: "multiverse", phase: "Multiverse: Deadpool & Mutantlar", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.70, storyTime: "Earth-10005", universe: "Earth-10005 (Fox)" },
+
+  { id: 104, title: "Blade", year: 1998, type: "multiverse", phase: "Multiverse: Klasik Marvel Evrenleri", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.58, storyTime: "Earth-26320", universe: "Klasik Marvel" },
+  { id: 105, title: "Daredevil (2003) & Fantastic Four (2005)", year: 2005, type: "multiverse", phase: "Multiverse: Klasik Marvel Evrenleri", era: "Dönem 0: Paralel Evrenler (Deadpool & Wolverine Öncesi)", storyOrder: 59.59, storyTime: "Void / Klasik Evren", universe: "Klasik Marvel" }
 ];
 
-const STORAGE_KEY = `mcu_watchlist_v3_${location.pathname}`;
+const STORAGE_KEY = `mcu_watchlist_v4_${location.pathname}`;
 let watchedSet = new Set();
 let currentMode = "release";
 let collapsedGroups = new Set();
 
-// ID listesini kısa aralık koduna sıkıştırır: [1,2,3,7,9,10] -> "1-3,7,9-10"
 function encodeIds(ids) {
   const sorted = [...ids].map(Number).filter(n => !isNaN(n)).sort((a, b) => a - b);
   if (!sorted.length) return "";
@@ -562,7 +602,6 @@ function encodeIds(ids) {
   return ranges.join(",");
 }
 
-// URL hash kodunu tekrar ID dizisine çözer: "1-3,7" -> [1,2,3,7]
 function decodeIds(str) {
   const result = [];
   if (!str) return result;
@@ -581,14 +620,12 @@ function decodeIds(str) {
 }
 
 function loadState() {
-  // 1. Öncelik: URL Hash (#w=...)
   const hashMatch = location.hash.match(/w=([0-9,-]+)/);
   if (hashMatch && hashMatch[1]) {
     watchedSet = new Set(decodeIds(hashMatch[1]));
   } else {
-    // 2. Öncelik: Tarayıcı localStorage
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(`mcu_watchlist_v3_${location.pathname}`);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.watched)) watchedSet = new Set(parsed.watched);
@@ -597,7 +634,6 @@ function loadState() {
     } catch {}
   }
 
-  // Mod bilgisini URL veya localStorage'dan al
   if (location.hash.includes("m=story")) currentMode = "story";
   syncUrlHash();
 }
@@ -705,7 +741,7 @@ function exportBackup() {
   const blob = new Blob([dataStr], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "mcu-watchlist-yedek.json";
+  a.download = "marvel-multiverse-watchlist-yedek.json";
   a.click();
 }
 
@@ -747,17 +783,18 @@ function render() {
   document.getElementById("statSeries").textContent = `${countWatched(byType("series"))}/${byType("series").length}`;
   document.getElementById("statAnim").textContent = `${countWatched(byType("anim"))}/${byType("anim").length}`;
   document.getElementById("statSpecial").textContent = `${countWatched(byType("special"))}/${byType("special").length}`;
+  document.getElementById("statMultiverse").textContent = `${countWatched(byType("multiverse"))}/${byType("multiverse").length}`;
 
   const next = ordered.find(i => !watchedSet.has(i.id));
   const btnNext = document.getElementById("btnMarkNext");
   if (next) {
-    document.getElementById("nextTitle").textContent = `#${String(next.displayOrder).padStart(2, "0")} • ${next.title}`;
-    document.getElementById("nextMeta").textContent = `${next.year} • ${next.phase} • Hikaye Zamanı: ${next.storyTime}`;
+    document.getElementById("nextTitle").textContent = `#${String(next.displayOrder).padStart(3, "0")} • ${next.title}`;
+    document.getElementById("nextMeta").textContent = `${next.year} • ${next.universe} • ${next.storyTime}`;
     btnNext.disabled = false;
     btnNext.style.opacity = "1";
   } else {
-    document.getElementById("nextTitle").textContent = "🎉 Tebrikler! Tüm MCU Maratonu Tamamlandı!";
-    document.getElementById("nextMeta").textContent = "77/77 yapımın tamamını izledin.";
+    document.getElementById("nextTitle").textContent = "🎉 Tebrikler! Tüm 105 Marvel Yapımı Tamamlandı!";
+    document.getElementById("nextMeta").textContent = "Ana MCU ve tüm Multiverse evrenlerini bitirdin.";
     btnNext.disabled = true;
     btnNext.style.opacity = "0.5";
   }
@@ -772,7 +809,7 @@ function render() {
     if (statusF === "watched" && !isW) return false;
     if (statusF === "unwatched" && isW) return false;
     if (q) {
-      const hay = `${item.displayOrder} ${item.title} ${item.year} ${item.phase} ${item.storyTime}`.toLowerCase();
+      const hay = `${item.displayOrder} ${item.title} ${item.year} ${item.phase} ${item.storyTime} ${item.universe}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -792,7 +829,13 @@ function render() {
     return;
   }
 
-  const typeLabel = { movie: "Film", series: "Dizi", anim: "Animasyon", special: "Özel Bölüm" };
+  const typeLabel = {
+    movie: "MCU Film",
+    series: "Dizi",
+    anim: "Animasyon",
+    special: "Özel Bölüm",
+    multiverse: "Multiverse"
+  };
 
   let html = "";
   groups.forEach((items, groupName) => {
@@ -810,13 +853,13 @@ function render() {
             return `
               <li class="item-row ${watched ? "watched" : ""}" onclick="toggleItem(${item.id})">
                 <div class="checkbox">${watched ? "✓" : ""}</div>
-                <span class="order-num">#${String(item.displayOrder).padStart(2, "0")}</span>
+                <span class="order-num">#${String(item.displayOrder).padStart(3, "0")}</span>
                 <div class="item-info">
                   <div class="item-title">${item.title}</div>
                   <div class="item-meta">
                     <span>📅 ${item.year}</span>
+                    <span>🌐 ${item.universe}</span>
                     <span>⏳ ${item.storyTime}</span>
-                    <span>${currentMode === "story" ? item.phase : item.era.split(":")[0]}</span>
                   </div>
                 </div>
                 <span class="tag tag-${item.type}">${typeLabel[item.type]}</span>
